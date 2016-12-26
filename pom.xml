@@ -128,7 +128,7 @@
   </dependencies>
   
   <build>
-		<finalName>CounterWebApp</finalName>
+		<finalName>FlatInfo</finalName>
 
 		<plugins>
 		    <!-- Eclipse project -->
