@@ -2,16 +2,19 @@ package com.flatinfo.Entity.Flat;
 
 public class FlatAddress {
 	private String roadNumber;
+	private String roadWay;
 	private String roadName;
-	private int postalCode;
+	private int postalCode;	
 	
-	public FlatAddress(String roadNumber, String roadName, int postalCode) {
+	public FlatAddress(String roadNumber, String roadWay, String roadName, int postalCode) {
 		super();
 		this.roadNumber = roadNumber;
+		this.roadWay = roadWay;
 		this.roadName = roadName;
 		this.postalCode = postalCode;
 	}
-	
+
+
 	public FlatAddress() {
 		super();
 	}
@@ -45,7 +48,15 @@ public class FlatAddress {
 	public void setPostalCode(int postalCode) {
 		this.postalCode = postalCode;
 	}
-	
-	
+
+
+	public String getRoadWay() {
+		return roadWay;
+	}
+
+
+	public void setRoadWay(String roadWay) {
+		this.roadWay = roadWay;
+	}
 
 }

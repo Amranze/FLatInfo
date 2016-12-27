@@ -3,7 +3,7 @@ package com.flatinfo.Entity.Flat;
 public class ContactInfo {
 	private FlatAddress address;
 	private String city;
-	private String Country;
+	private String country;
 	
 	public ContactInfo() {
 		super();
@@ -12,7 +12,7 @@ public class ContactInfo {
 		super();
 		this.address = address;
 		this.city = city;
-		Country = country;
+		this.country = country;
 	}
 	public FlatAddress getAddress() {
 		return address;
@@ -27,10 +27,10 @@ public class ContactInfo {
 		this.city = city;
 	}
 	public String getCountry() {
-		return Country;
+		return country;
 	}
 	public void setCountry(String country) {
-		Country = country;
+		country = country;
 	}
 	
 	

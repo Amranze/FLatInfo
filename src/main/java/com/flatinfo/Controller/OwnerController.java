@@ -3,6 +3,8 @@ package com.flatinfo.Controller;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,11 +21,18 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 @RestController
-@RequestMapping(value = "/Owner")
+//@Controller
+@RequestMapping(value = "/owner")
 public class OwnerController {
 	
 	private DBCollection ownerCollection = MongodbConnection();
 
+	@RequestMapping(value="/index", method = RequestMethod.GET)
+	public String index(ModelMap model){
+		model.addAttribute("message", "Owner");
+		return "owner";
+	}
+	
 	@SuppressWarnings("null")
 	@RequestMapping(value="/Owners", method=RequestMethod.GET)
 	public List<DBObject> getAllOwners(){

@@ -10,7 +10,6 @@
 		<config>src/main/webapp/WEB-INF/rest-dispatcher-servlet.xml</config>
 	</configs>
 	<autoconfigs>
-		<config>src/main/webapp/WEB-INF/rest-servlet.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +21,22 @@ import com.mongodb.MongoClient;
 
 //@RestController
 @Controller
-@RequestMapping(value = "/User")
+@RequestMapping(value = "/user")
 public class UserController {
 	private DBCollection userCollection = MongodbConnection();
 	private Logger logger;
+	
+	@RequestMapping(value="/index", method=RequestMethod.GET)
+	public String index(ModelMap model){
+		//the return is the one who decide which views to parse on it
+		return "user";
+	}
+	
+	@RequestMapping(value="search/{address}", method=RequestMethod.GET)
+	public String searchUser(ModelMap model, @PathVariable("address") String address){
+		System.out.println("The address is "+address);
+		return address;
+	}
 
 	@RequestMapping(value="/Users", method=RequestMethod.GET)
 	public List<DBObject> getAllUsers(){
