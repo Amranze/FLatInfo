@@ -1,24 +1,54 @@
 package com.flatinfo.Entity.Flat;
 
 public class FlatAddress {
+	private String flatNumber;
+	private String buildingNumber;
 	private String roadNumber;
 	private String roadWay;
 	private String roadName;
-	private int postalCode;	
+	//private int postalCode;
 	
-	public FlatAddress(String roadNumber, String roadWay, String roadName, int postalCode) {
-		super();
-		this.roadNumber = roadNumber;
-		this.roadWay = roadWay;
-		this.roadName = roadName;
-		this.postalCode = postalCode;
-	}
-
-
 	public FlatAddress() {
 		super();
 	}
 
+	public FlatAddress(String flatNumber, String buildingNumber, String roadNumber, String roadWay, String roadName) {
+		super();
+		this.flatNumber = flatNumber;
+		this.buildingNumber = buildingNumber;
+		this.roadNumber = roadNumber;
+		this.roadWay = roadWay;
+		this.roadName = roadName;
+	}
+	
+	
+	public FlatAddress(String roadNumber, String roadName) {
+		super();
+		this.roadNumber = roadNumber;
+		this.roadName = roadName;
+	}
+
+	public FlatAddress(String roadName) {
+		super();
+		this.roadName = roadName;
+	}
+
+	public String getFlatNumber() {
+		return flatNumber;
+	}
+
+
+	public void setFlatNumber(String flatNumber) {
+		this.flatNumber = flatNumber;
+	}
+
+	public String getBuildingNumber() {
+		return buildingNumber;
+	}
+
+	public void setBuildingNumber(String buildingNumber) {
+		this.buildingNumber = buildingNumber;
+	}
 
 	public String getRoadNumber() {
 		return roadNumber;
@@ -40,14 +70,14 @@ public class FlatAddress {
 	}
 
 
-	public int getPostalCode() {
+	/*public int getPostalCode() {
 		return postalCode;
 	}
 
 
 	public void setPostalCode(int postalCode) {
 		this.postalCode = postalCode;
-	}
+	}*/
 
 
 	public String getRoadWay() {

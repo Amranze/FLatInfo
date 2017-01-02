@@ -1,7 +1,7 @@
 <%@ page import="java.util.*" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="homeController">
   <head>
 
 
@@ -35,6 +35,13 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="${pageContext.request.contextPath}/resources/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
+
+	<!-- Autocomplete -->
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAjLRARztZSP1qDqGklKcMXD27qCkb9-60&libraries=places&sensor=false"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/angular.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/controller/appController.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/controller/ngAutocomplete.js"></script>
+  
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../${pageContext.request.contextPath}/resources/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -77,21 +84,24 @@
   
   
 		<!-- ==== HEADERWRAP ==== -->
-	    <div id="headerwrap" id="home" name="home">
-			<header class="clearfix">
-	  		 		<h1><span class="icon icon-shield"></span></h1>
-	  		 		<p>A Bootstrap 3 One Page Theme.</p>
-	  		 		<p>Exclusive for BlackTie.co.</p>
-					<div class="column">
-					<div id="sb-search" class="sb-search">
-						<form:form action="flat/search/" method="post">
-							<input class="sb-search-input" placeholder="Enter your flat's address.." type="text" value="" name="search" id="search">
-							<input class="sb-search-submit" type="submit" value="">
-							<span class="sb-icon-search"></span>
-						</form:form>
+		<div ng-controller="autoCompleteCtrl">
+		    <div id="headerwrap" id="home" name="home">
+				<header class="clearfix">
+		  		 		<h1><span class="icon icon-shield"></span></h1>
+		  		 		<p>A Bootstrap 3 One Page Theme.</p>
+		  		 		<p>Exclusive for BlackTie.co.</p>
+						<div class="column">
+						<div id="sb-search" class="sb-search">
+							<form:form action="flat/search/" method="post">
+								<input class="sb-search-input" placeholder="Enter your flat's address.." ng-model="autocomplete" 
+								ng-autocomplete options="options" details="details" type="text" value="" name="search" id="search">
+								<input class="sb-search-submit" type="submit" value="">
+								<span class="sb-icon-search"></span>
+							</form:form>
+						</div>
 					</div>
-				</div>
-	  		</header>	    
+		  		</header>	   
+	  		</div> 
 	    </div><!-- /headerwrap -->
 
 		<!-- ==== GREYWRAP ==== -->
