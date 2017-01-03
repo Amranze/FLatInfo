@@ -27,33 +27,45 @@
           
           <div class="top-row">
             <div class="field-wrap">
-              <label>
-                First Name<span class="req">*</span>
-              </label>
-              <form:input type="text" path="firstName" />
+              <label>First Name<span class="req">*</span></label>
+              <form:input type="text" path="firstName" required="required"/>
             </div>
         
             <div class="field-wrap">
-              <label>
-                Last Name<span class="req">*</span>
-              </label>
-              <form:input type="text" path="lastName" />
+              <label>Last Name<span class="req">*</span></label>
+              <form:input type="text" path="lastName" required="required"/>
             </div>
           </div>
 
           <div class="field-wrap">
-            <label>
-              Email Address<span class="req">*</span>
-            </label>
-            <form:input type="email" path="mail" />
+            <label>Username<span class="req">*</span></label>
+            <form:input type="text" path="username" required="required"/>
+          </div>
+
+          <div class="field-wrap">
+            <label>Email Address<span class="req">*</span></label>
+            <form:input type="email" path="mail" required="required"/>
+          </div>
+          <c:if test="${empty ErrorMessage}"></c:if>
+          <c:if test="${not empty ErrorMessage}">
+	          <div class="field-wrap">
+	            <div class="ErrorMessage" id="ErrorMessage">${ErrorMessage}</div>
+	          </div>
+          </c:if>
+          <div class="field-wrap">
+            <label>Set A Password<span class="req">*</span></label>
+            <form:input type="password" path="password" id="password" required="required"/>
           </div>
           
           <div class="field-wrap">
-            <label>
-              Set A Password<span class="req">*</span>
-            </label>
-            <form:input type="password" path="password"/>
+            <label>Confirm Password<span class="req">*</span></label>
+            <input type="password" id="confirmPassword" onChange="isMatched();" required/>
           </div>
+          
+           <div class="field-wrap">
+            <div class="divCheckPasswordMatch" id="divCheckPasswordMatch"></div>
+          </div>
+          
           
           <button type="submit" class="button button-block"/>Get Started</button>
           
@@ -74,9 +86,7 @@
           </div>
           
           <div class="field-wrap">
-            <label>
-              Password<span class="req">*</span>
-            </label>
+            <label>Password<span class="req">*</span></label>
             <input type="password"required autocomplete="off"/>
           </div>
           
@@ -137,6 +147,21 @@
 		  $(target).fadeIn(600);
 		  
 		});
+	</script>
+	<script type="text/javascript">
+	function checkPasswordMatch() {
+	    var password = $("#password").val();
+	    var confirmPassword = $("#confirmPassword").val();
+
+	    if (password != confirmPassword)
+	        $("#divCheckPasswordMatch").html("Passwords do not match!");
+	    else
+	        $("#divCheckPasswordMatch").html("Passwords match.");
+	}
+
+	$(document).ready(function () {
+	   $("#confirmPassword").keyup(checkPasswordMatch);
+	});
 	</script>
 </body>
 </html>

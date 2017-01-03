@@ -24,7 +24,8 @@
 		<org.slf4j-version>1.7.21</org.slf4j-version>
 		<log4j-version>1.2.15</log4j-version>
 		<swagger-version>2.3.1</swagger-version>
-		<jdk.version>1.8</jdk.version>
+		<jdk.version>1.8</jdk.version>		        
+		<spring-security.version>4.0.2.RELEASE</spring-security.version>
 	</properties>
 
  <dependencies>
@@ -70,6 +71,17 @@
 			</exclusion>
 		</exclusions>
 	</dependency>
+	<dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-security.version}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring-security.version}</version>
+    </dependency>
 	<!-- Logging -->
 	<dependency>
 		<groupId>org.slf4j</groupId>
@@ -87,6 +99,12 @@
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>${org.slf4j-version}</version>
 		<scope>runtime</scope>
+	</dependency>
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>3.1.0</version>
+	    <scope>provided</scope>
 	</dependency>
 	<dependency>
 		<groupId>log4j</groupId>
