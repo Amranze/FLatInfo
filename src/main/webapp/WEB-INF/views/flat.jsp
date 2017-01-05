@@ -1,4 +1,4 @@
-<%@page import="com.flatinfo.Controller.*"%>
+<!-- %@page import="flatinfo.rest.mvc.*"%-->
 
 <html>
 <head>

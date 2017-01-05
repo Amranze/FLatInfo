@@ -18,7 +18,7 @@
 	http://www.springframework.org/schema/oxm
 	http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
 
-
+	<context:component-scan base-package="flatinfo.core.repositories.mongodb"/>
 	<!-- MongoTemplate for connecting and quering the documents in the database -->
 	<!-- set the mapping converter to be used by the MongoTemplate -->
 	  <!-- Factory bean that creates the Mongo instance -->
@@ -33,4 +33,12 @@
     <constructor-arg name="mongo" ref="mongo"/>
     <constructor-arg name="databaseName" value="flat"/>
   </bean>
+  
+  <bean id="userRepo" class="flatinfo.core.repositories.mongodb.MongoDBUserRepo">
+  
+  </bean>
+  
+  <context:component-scan base-package="flatinfo.core.services.impl"/>
+  <context:component-scan base-package="flatinfo.core.security"/>
+  
 </beans>
