@@ -1,5 +1,4 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -10,154 +9,53 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile.css">
-<script type="text/javascript">
-$(function () {
-	  $('[data-toggle="tooltip"]').tooltip();
-	});
-
-	$(function () {
-	  $('[data-toggle="popover"]').popover();
-	});
-</script>
 </head>
 <body>
-<div class="mainbody container-fluid">
-    <div class="row">
-        <div class="navbar-wrapper">
-            <div class="container-fluid">
-                <div class="navbar navbar-default navbar-static-top" role="navigation">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
-                                    class="icon-bar"></span><span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="./ORqmj" style="margin-right:-8px; margin-top:-5px;">
-                                <img alt="Brand" src="https://lut.im/7trApsDX08/GeilMRp1FIm4f2p7.png" width="30px" height="30px">
-                            </a>
-                            <a class="navbar-brand" href="./ORqmj">Project*</a>
-                            <i class="brand_network"><small><small>diaspora* Network</small></small></i>
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                <li><a href="./ORqmj">Stream</a></li>
-                                <li><a href="#">My Activity</a></li>
-                                <li><span class="badge badge-important">2</span><a href="#"><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i></a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="user-avatar pull-left" style="margin-right:8px; margin-top:-5px;">
-                                        <img src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" class="img-responsive img-circle" title="John Doe" alt="John Doe" width="30px" height="30px">
-                                    </span>
-                                    <span class="user-name">
-                                        ${ userSession.getUsername() }
-                                    </span>
-                                    <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <div class="navbar-content">
-                                                <div class="row">
-                                                    <div class="col-md-5">
-                                                        <img src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" alt="Alternate Text" class="img-responsive" width="120px" height="120px" />
-                                                        <p class="text-center small">
-                                                            <a href="./3X6zm">Change Photo</a></p>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <span>${ userDB.get("username") }</span>
-                                                        <p class="text-muted small">
-                                                            ${ userDB.get("mail") }</p>
-                                                        <div class="divider">
-                                                        </div>
-                                                        <a href="./56ExR" class="btn btn-default btn-xs"><i class="fa fa-user-o" aria-hidden="true"></i> Profile</a>
-                                                        <a href="#" class="btn btn-default btn-xs"><i class="fa fa-address-card-o" aria-hidden="true"></i> Contacts</a>
-                                                        <a href="#" class="btn btn-default btn-xs"><i class="fa fa-cogs" aria-hidden="true"></i> Settings</a>
-                                                        <a href="#" class="btn btn-default btn-xs"><i class="fa fa-question-circle-o" aria-hidden="true"></i> Help!</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="navbar-footer">
-                                                <div class="navbar-footer-content">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <a href="#" class="btn btn-default btn-sm"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Change Passowrd</a>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <a href="#" class="btn btn-default btn-sm pull-right"><i class="fa fa-power-off" aria-hidden="true"></i> Sign Out</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="padding-top:50px;"> </div>
-        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h1 class="panel-title pull-left" style="font-size:30px;"><i class="fa fa-cogs" aria-hidden="true"></i> Settings</h1>
-                </div>
-            </div>
-        </div>
-        <form:form class="form-horizontal" action="edit" method="post" modelAttribute="userForm">
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h1 class="panel-title pull-left" style="font-size:30px;">My basic profile</h1>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="panel-title pull-left">Your Name</h3>
-                    <br><br>
-                        <label for="First_name">First name</label>
-                        <input type="text" class="form-control" id="First_name" path="firstName" placeholder="${ user.getFirstName() }" value="${ user.getFirstName() }">
-                        <label for="Last_name">Last name</label>
-                        <input type="text" class="form-control" id="Last_name" path="lastName" placeholder="${ user.getLastName() }" value="${ user.getLastName() }">
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="panel-title pull-left">Describe yourself in 5 words</h3>
-                    <br><br>
-                        <input type="text" class="form-control" id="keywords" placeholder="Like #movies #kittens #travel #teacher #newyork">
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="panel-title pull-left">Your photo</h3>
-                    <br><br>
-                    <div align="center">
-                        <div class="col-lg-12 col-md-12">
-                            <img class="img-thumbnail img-responsive" path="pictures" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" width="300px" height="300px">
-                        </div>
-                        <div class="col-lg-12 col-md-12">
-                            <button class="btn btn-primary"><i class="fa fa-upload" aria-hidden="true"></i> Upload a new profile photo!</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="panel-title pull-left">My extended profile</h3>
-                    <br><br>
-                    <p>Visibility of your extended profile:</p>
-                    ...
-                    <br><br>
-                        <label>Your bio</label>
-                        <textarea class="form-control" rows="3"></textarea>
-                    <br><br>
+
+<%--  <form:form action="edit" method="post" commandName="userForm" id="userForm"> --%>
+          
+<!--           <div class="top-row"> -->
+<!--             <div class="field-wrap"> -->
+<!--               <label>First Name<span class="req">*</span></label> -->
+<%--               <form:input type="text" path="firstName" required="required"/> --%>
+<!--             </div> -->
+        
+<!--             <div class="field-wrap"> -->
+<!--               <label>Last Name<span class="req">*</span></label> -->
+<%--               <form:input type="text" path="lastName" required="required"/> --%>
+<!--             </div> -->
+<!--           </div> -->
+
+<!--           <div class="field-wrap"> -->
+<!--             <label>Username<span class="req">*</span></label> -->
+<%--             <form:input type="text" path="username" required="required"/> --%>
+<!--           </div> -->
+
+<!--           <div class="field-wrap"> -->
+<!--             <label>Email Address<span class="req">*</span></label> -->
+<%--             <form:input type="email" path="mail" required="required"/> --%>
+<!--           </div> -->
+         
+          
+<!--           <button type="submit" class="button button-block"/>Get Started</button> -->
+          
+<%--           </form:form> --%>
+
+
+<h1>${sessionScope.userSession.getFirstName()}</h1>
+<h1>${ userTest.getFirstName() }</h1>
+
+        <form:form class="form-horizontal" action="edit" method="post" commandName="user">
+          <label for="First_name">First name</label>
+          <form:input type="text" class="form-control" id="First_name" path="firstName" value ="${ userF.getFirstName() }"  placeholder="${ userF.getFirstName() }"/>
+          <label for="Last_name">Last name</label>
+          <form:input type="text" class="form-control" id="Last_name" path="lastName" value ="${ userF.getLastName() }" placeholder="${userF.getLastName()}"/>
+
                         <label for="Your_location">Your location</label>
-                        <input type="text" class="form-control" id="Your_location" path="adresse" placeholder="${userDB.get("adresse")}">
-                        <br>
+                        <form:input type="text" class="form-control" id="Your_location" path="adresse" />
+          
                         <label for="Your_gender">Your gender</label>
-                        <input type="text" class="form-control" id="Your_gender" path="gender" placeholder="${userDB.get("firstName")}">
+                        <form:input type="text" class="form-control" id="Your_gender" path="gender" />
                         <br>
                         <label>Your Birthday</label>
                         <div class="form-inline" id="birth-date">
@@ -327,36 +225,9 @@ $(function () {
                                 <option value="31">31</option>
                             </select>
                         </div>
-                </div>
-            </div>
-            <hr>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="panel-title pull-left">Profile settings</h3>
-                    <br><br>
-                    <h4>Search</h4>
-                    <div class="well checkbox">
-                        <label class="checkbox-inline" for="profile_searchable"><input type="checkbox" name="profile[searchable]" id="profile_searchable" value="true" checked="checked">
-                            Allow for people to search for you within diaspora*
-                        </label>
-                    </div>
-                    <br>
-                    <h4>NSFW</h4>
-                    <p>NSFW (“not safe for work”) is diaspora*’s self-governing community standard for content which may not be suitable to view while at work. If you plan to share such material frequently, please check this option so that everything you share will be hidden from people’s streams unless they choose to view them.</p>
-                    <div class="well checkbox">
-                        <label class="checkbox-inline" for="profile_nsfw"><input type="checkbox" name="profile[nsfw]" id="profile_nsfw" value="true">
-                            Mark everything I share as NSFW
-                        </label>
-                    </div>
-                    <p class="text-danger"><strong><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> If you choose not to select this option, please add the #nsfw tag each time you share such material.</strong></p>
-                    <button class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Cancel</button>
-                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Update Profile</button>
-                </div>
-            </div>
-        </div>
+                  <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+                        
         </form:form>
-    </div>
-</div>
 
 </body>
 </html>

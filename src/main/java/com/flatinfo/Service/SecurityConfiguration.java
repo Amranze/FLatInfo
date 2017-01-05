@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
- 
+ /*
     @Autowired
     @Qualifier("customUserDetailsService")
     UserDetailsService userDetailsService;
@@ -67,5 +67,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationTrustResolver getAuthenticationTrustResolver() {
         return new AuthenticationTrustResolverImpl();
     }
- 
+ */
 }

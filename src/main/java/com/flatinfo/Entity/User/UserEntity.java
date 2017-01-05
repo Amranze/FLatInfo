@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.flatinfo.Entity.Flat.FlatEntity;
 
-@Document
+@Document(collection="userCollection")
 public class UserEntity {
 	//TODO will I need the id
 	private long id;
@@ -18,6 +18,7 @@ public class UserEntity {
 	private String password;
 	private Date birthdate;
 	private int age;
+	private String gender;
 	private String phone;
 	private String adresse;
 	private int postalCode;
@@ -35,13 +36,18 @@ public class UserEntity {
 	/*private String fbUrl;
 	private String linkedinUrl;
 	private String TwitterUrl;*/
+	
+	//TODO add a variable for rating the user or complaints on the user if he is really trustfull and add something for verifing identity
+	//card beside fb and linkedIn and his phone
+	
 	public UserEntity() {
 		super();
 	}
+	
 	public UserEntity(long id, String firstName, String lastName, String mail, String username, String password,
-			Date birthdate, int age, String phone, String adresse, int postalCode, String city, String country,
-			long lastConnection, boolean active, List<String> pictures, List<FlatEntity> flats, String stayingTime,
-			ShowInfo infoToShow, SocialNetwork socialNetwork) {
+			Date birthdate, int age, String gender, String phone, String adresse, int postalCode, String city,
+			String country, long lastConnection, boolean active, List<String> pictures, List<FlatEntity> flats,
+			String stayingTime, ShowInfo infoToShow, SocialNetwork socialNetwork) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -51,6 +57,7 @@ public class UserEntity {
 		this.password = password;
 		this.birthdate = birthdate;
 		this.age = age;
+		this.gender = gender;
 		this.phone = phone;
 		this.adresse = adresse;
 		this.postalCode = postalCode;
@@ -64,6 +71,9 @@ public class UserEntity {
 		this.infoToShow = infoToShow;
 		this.socialNetwork = socialNetwork;
 	}
+
+
+
 	public long getId() {
 		return id;
 	}
@@ -111,6 +121,12 @@ public class UserEntity {
 	}
 	public void setAge(int age) {
 		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	public String getPhone() {
 		return phone;

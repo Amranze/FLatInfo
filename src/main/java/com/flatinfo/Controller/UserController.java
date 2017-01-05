@@ -3,10 +3,14 @@ package com.flatinfo.Controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.flatinfo.Entity.Flat.FlatEntity;
+import com.flatinfo.Entity.User.ShowInfo;
+import com.flatinfo.Entity.User.SocialNetwork;
 import com.flatinfo.Entity.User.UserEntity;
 import com.flatinfo.Service.SecurityServiceImpl;
 import com.mongodb.BasicDBObject;
@@ -36,6 +43,10 @@ import com.mongodb.MongoClient;
 @RequestMapping(value = "/user")
 @SessionAttributes("user")
 public class UserController {
+	
+	//@Autowired
+	//SecurityServiceImpl securityService;
+	
 	private DBCollection userCollection = MongodbConnection();
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
@@ -45,30 +56,21 @@ public class UserController {
 		return "user";
 	}
 	
-	@RequestMapping(value="search/{address}", method=RequestMethod.GET)
-	public String searchUser(ModelMap model, @PathVariable("address") String address){
-		System.out.println("The address is "+address);
-		return address;
-	}
-	
 	//TODO try to group POST and GET in the same function
 	@RequestMapping(value="login", method=RequestMethod.POST)
 	//public ModelAndView login(@ModelAttribute("inputUser") String username, @ModelAttribute("inputpwd") String password){
-	public ModelAndView login(ModelAndView mv, @ModelAttribute("user") UserEntity user, HttpSession session){
+	public ModelAndView login(ModelAndView mv, @ModelAttribute("user") UserEntity user, BindingResult result, HttpSession session){
+		if(result.hasErrors()){
+			mv.addObject("ErrorMessage","There was a problem with your authentification");
+			mv.setViewName("user/login");
+			return mv;
+		}
 		System.out.println("username "+ user.getMail() + " password : "+user.getPassword());
-		/*HttpSession session = new HttpSession();
-		session.getServletContext();
-		System.out.println("Session "+session);*/
-		//ModelAndView mv = new ModelAndView();
 		DBObject query = new BasicDBObject();
 		if(user.getMail().indexOf('@') >= 0)	
 			query.put("mail", user.getMail());
 		else
 			query.put("username", user.getMail());
-		/*else {
-			mv.addObject("ErrorMessage", "There is no Mail or username");
-			return mv;
-		}*/
 		query.put("password", user.getPassword());
 		DBCursor userCursor = userCollection.find(query);
 		logger.debug("Query "+query);
@@ -80,34 +82,89 @@ public class UserController {
 		}
 		mv.setViewName("user/profile");
 		DBObject userDB = userCursor.next();
-		session.setAttribute("user", user);
-		//UserEntity user = mongoTemplate.getConverter().read(UserEntity.class, userCursor); 
-		mv.addObject("user", userDB);
+		/*if(request.getParameter("remember-me") != null){
+			logger.debug("From here");
+			Cookie ckUsername = new Cookie("username", (String)userDB.get("username"));
+			ckUsername.setMaxAge(3600);
+			response.addCookie(ckUsername);
+			Cookie ckMail = new Cookie("mail", (String)userDB.get("mail"));
+			ckMail.setMaxAge(3600);
+			response.addCookie(ckMail);
+		}*/
+		UserEntity userTest = convertDBObjectToUserEntity(userDB); 
+		session.setAttribute("userSession", userTest);
+		mv.addObject("user", user);
 		return mv;
 	}
 	
 	
+	public UserEntity convertDBObjectToUserEntity(DBObject userCursor) {
+		@SuppressWarnings("unchecked")
+		UserEntity newUser = new UserEntity(
+				1L,
+				(String)userCursor.get("firstName"),
+				(String)userCursor.get("lastName"),
+				(String)userCursor.get("mail"),
+				(String)userCursor.get("username"),
+				(String)userCursor.get("password"),
+				(Date)userCursor.get("birthdate"),
+				(int)userCursor.get("age"),
+				(String)userCursor.get("gender"),
+				(String)userCursor.get("phone"),
+				(String)userCursor.get("adresse"),
+				(int)userCursor.get("postalCode"),
+				(String)userCursor.get("city"),
+				(String)userCursor.get("country"),
+				1L,true,null,null,"",null,null
+				);
+		
+		/*UserEntity newUser = new UserEntity(
+				(long)userCursor.get("id"),
+				(String)userCursor.get("firstName"),
+				(String)userCursor.get("lastName"),
+				(String)userCursor.get("mail"),
+				(String)userCursor.get("username"),
+				(String)userCursor.get("password"),
+				(Date)userCursor.get("birthdate"),
+				(int)userCursor.get("age"),
+				(String)userCursor.get("gender"),
+				(String)userCursor.get("phone"),
+				(String)userCursor.get("adresse"),
+				(int)userCursor.get("postalCode"),
+				(String)userCursor.get("city"),
+				(String)userCursor.get("country"),
+				(long)userCursor.get("lastConnection"),
+				(boolean)userCursor.get("Active"),
+				(List<String>)userCursor.get("pictures"),
+				(List<FlatEntity>)userCursor.get("flats"),
+				(String)userCursor.get("stayingTime"),
+				(ShowInfo)userCursor.get("infoToShow"),
+				(SocialNetwork)userCursor.get("socialNetwork")
+				);*/
+		return newUser;
+	}
+
 	@RequestMapping(value="login", method=RequestMethod.GET)
 	public ModelAndView login(ModelAndView mv, HttpSession session){
-		if(session.getAttribute("user") == null) {
+		if(session.getAttribute("userSession") == null) {
 			mv.addObject("user", new UserEntity());
 			mv.setViewName("user/login");
 			return mv;
 		}
+		
 		mv.setViewName("user/profile");
 		return mv;
 	}
 	
 	@RequestMapping(value="logout", method=RequestMethod.GET)
 	public String logout(ModelAndView mv, HttpSession session){
-		session.invalidate();
-		session.removeAttribute("user");
+		session.removeAttribute("userSession");
         return "redirect:/";
 	}
 	
 	@RequestMapping(value="signup", method=RequestMethod.GET)
 	public ModelAndView signup(ModelAndView mv, HttpSession session){
-		if(session.getAttribute("user") == null) {
+		if(session.getAttribute("userSession") == null) {
 			mv.addObject("user", new UserEntity());
 			mv.setViewName("user/signup");			
 			return mv;
@@ -133,16 +190,14 @@ public class UserController {
 		//mv.addObject("user", new UserEntity());
 		mv.addObject("user", user);
 		mv.setViewName("user/profile");
-		session.setAttribute("user", user);
+		session.setAttribute("userSession", user);
 		return mv;
 	}
 	
 	@RequestMapping(value="/profile", method=RequestMethod.GET)
-	public ModelAndView getProfile(ModelAndView mv, HttpSession session, BindingResult bindingResult, @RequestHeader(value = "referer", required = false) final String previousURL){
-	    if (bindingResult.hasErrors()) {
-	        //errors processing
-	    }  
-		if(session.getAttribute("user") == null) {
+	public ModelAndView getProfile(ModelAndView mv, HttpSession session, @RequestHeader(value = "referer", required = false) final String previousURL){
+
+		if(session.getAttribute("userSession") == null) {
 			mv.addObject("Message", "You need to log in to access to the specified page");
 			logger.debug("previousURL : "+previousURL);
 			mv.addObject("previousUrl", previousURL);
@@ -154,21 +209,43 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public ModelAndView editProfile(){
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("user/editProfile");
-		/*BasicDBObject query = new BasicDBObject();
-		query.put("username", user.getUsername());
+	public ModelAndView editProfile(ModelAndView mv, HttpSession session){
+	if(session.getAttribute("userSession") == null) {
+		mv.addObject("user", new UserEntity());
+		mv.setViewName("user/login");			
+		return mv;
+	}
+	mv.addObject("userTest", (UserEntity) session.getAttribute("userSession"));
+	UserEntity userTest = (UserEntity) session.getAttribute("userSession");
+	logger.debug("userTest"+userTest.getFirstName());
+	mv.setViewName("user/editProfile2");			
+	return mv;
+	}
+	
+	@RequestMapping(value="/edit", method=RequestMethod.POST)
+	public ModelAndView editProfile(ModelAndView mv, @ModelAttribute("userForm") UserEntity user, HttpSession session, BindingResult bindingResult){
+	    if (bindingResult.hasErrors()) {
+	        //errors processing
+	    }
+	    //logger.debug(user.getAdresse());
+		//BasicDBObject query = new BasicDBObject();
+		//query.put("username", user.getUsername());
 		
-		BasicDBObject userDBObject = userEntityToDBObject(user);
+		//BasicDBObject userDBObject = userEntityToDBObject(user);
+	    
+	    logger.debug("User "+user.getAdresse()+ "  "+user.getFirstName()+ " "+user.getLastName());
 		
 		try {
-			userCollection.findAndModify(query, userDBObject);	
-			return true;
+			//userCollection.findAndModify(query, userDBObject);
+			mv.addObject("successMessage", "Your profile is edited successfully");
+			mv.setViewName("user/profile");
+			return mv;
 		}
 		catch (Exception e) {
 			logger.debug("Excpetion accured"+e);
-		}*/
+		}
+		mv.setViewName("user/editProfile2");
+		mv.addObject("errorMessage", "There was a problem with editing yout profile please try again");
 		return mv;
 	}
 	
@@ -229,6 +306,7 @@ public class UserController {
 		//TODO Crypt the password
 		userDBObject.put("password", user.getPassword());
 		userDBObject.put("birthdate", user.getBirthdate());
+		userDBObject.put("gender", user.getGender());
 		userDBObject.put("age", user.getAge());
 		userDBObject.put("phone", user.getPhone());
 		userDBObject.put("adresse", user.getAdresse());

@@ -6,74 +6,13 @@
         http://www.springframework.org/schema/security/spring-security-4.0.xsd
         http://www.springframework.org/schema/beans 
     	http://www.springframework.org/schema/beans/spring-beans.xsd">
-<!-- 
-	<http create-session="never" use-expressions="true"
-		 authentication-manager-ref="authenticationManager">
-		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/**" />
-		<csrf disabled="true" />
-		<http-basic />
-	</http>
-
-	<global-method-security pre-post-annotations="enabled" />
-
-	<authentication-manager alias="authenticationManager">
-		<authentication-provider>
-			<user-service>
-				<user name="Test"
-					password="$2a$10$VPsQevH/xhp7OzGdGtTfUeu2FquEJpGebfAaf/uJd5gaNjqFVbc06"
-					authorities="ROLE_ADMIN" />
-					
-				<user name="Amrane" 
-					password="$2a$10$oriZ38NxWEdIwx4X64lmc.2p/uY.03dlzzWL6j7gaQAM8XLYRmEZi"
-					authorities="ROLE_ADMIN"/>
-			</user-service>
-			<password-encoder hash="bcrypt" />
-		</authentication-provider>
-	</authentication-manager>
-
--->
-<!-- enable use-expressions -->
-  <!--<http auto-config="true" use-expressions="true">
-    <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
-    <intercept-url pattern="/anonymous*" access="isAnonymous()" />
-    <intercept-url pattern="/login*" access="permitAll" />
-    <intercept-url pattern="/**" access="isAuthenticated()" />
  
-    <form-login login-page="/user/login"
-		default-target-url="/index"
-		authentication-failure-url="/login?error"
-		username-parameter="username"
-		password-parameter="password"
-		login-processing-url="/auth/login_check"
-		authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />
-
-    <logout invalidate-session="true" 
-     logout-success-url="/login" delete-cookies="JSESSIONID" />
-    <csrf />
-
-    <remember-me key="uniqueAndSecret"
-        token-validity-seconds="1209600"
-		remember-me-parameter="remember-me"
-		data-source-ref="dataSource" />
-
-  </http>-->
-  
-  	<http auto-config="true">
-		<intercept-url pattern="/admin*" access="ROLE_ADMIN" />
-		<intercept-url pattern="/user*" access="ROLE_ADMIN" />
-    	<intercept-url pattern="/anonymous*" access="isAnonymous()" />
-    	<intercept-url pattern="/user/login*" access="permitAll" />		
-    <logout logout-success-url="/admin" />
-	</http>
-
-	<authentication-manager>
-	  <authentication-provider>
-	   <user-service>
-		<user name="user" password="password" authorities="ROLE_USER" />
-		<user name="eclipse" password="password" authorities="ROLE_ADMIN" />
-	   </user-service>
-	  </authentication-provider>
-	</authentication-manager>
-  
-  
-</beans:beans>
+<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+      <property name="tokenRepository" ref="myTokenRepository" />
+      <property name="userDetailsService" ref="userDetailsService" />
+      <property name="key" value="myRememberMeKey" />
+      <property name="alwaysRemember" value="true" />
+ </bean>
+ <bean id="myTokenRepository" class="com.flatinfo.Repository.UserRepository">  </bean>
+ 
+</beans:beans> 

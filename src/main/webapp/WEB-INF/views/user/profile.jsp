@@ -64,9 +64,9 @@ $(function () {
                                                             <a href="./3X6zm">Change Photo</a></p>
                                                     </div>
                                                     <div class="col-md-7">
-                                                        <span>${ user.get("username") }</span>
+                                                        <span>{ user.get("username") }</span>
                                                         <p class="text-muted small">
-                                                            ${ user.get("mail") }</p>
+                                                            { user.get("mail") }</p>
                                                         <div class="divider">
                                                         </div>
                                                         <a href="./56ExR" class="btn btn-default btn-xs"><i class="fa fa-user-o" aria-hidden="true"></i> Profile</a>

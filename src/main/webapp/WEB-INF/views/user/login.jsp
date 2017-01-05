@@ -109,7 +109,7 @@
                 <form:input type="password" path="password" name="inputpwd" id="inputPassword" class="form-control" placeholder="Password" required="required" />
                 <div id="remember" class="checkbox">
                     <label>
-                        <input type="checkbox" value="remember-me"> Remember me
+                        <input type="checkbox" value="remember-me" name="remember-me"> Remember me
                     </label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>

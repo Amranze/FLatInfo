@@ -19,18 +19,35 @@
 	http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
 
 
+	<context:property-placeholder location="WEB-INF/application.properties" />
 	<!-- MongoTemplate for connecting and quering the documents in the database -->
 	<!-- set the mapping converter to be used by the MongoTemplate -->
-	  <!-- Factory bean that creates the Mongo instance -->
-	  
-  <bean id="mongo" class="com.mongodb.Mongo">
-    <constructor-arg name="host" value="127.0.0.1" />
-    <constructor-arg name="port" value="27017" />
-  </bean>
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+		<property name="writeResultChecking">
+			<util:constant
+				static-field="org.springframework.data.mongodb.core.WriteResultChecking.EXCEPTION" />
+		</property>
+	</bean>
 
-  <!-- Define the MongoTemplate which handles connectivity with MongoDB -->
-  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate" depends-on="mongo">
-    <constructor-arg name="mongo" ref="mongo"/>
-    <constructor-arg name="databaseName" value="flat"/>
-  </bean>
+	<mongo:mongo id="mongo" replica-set="${mongo.database.url}">
+		<mongo:options slave-ok="true" connections-per-host="70"
+			write-number="1" />
+	</mongo:mongo>
+	
+	<mongo:db-factory dbname="${mongo.database.name:bwc}"
+		mongo-ref="mongo" username="${mongo.database.user}" password="${mongo.database.pwd}"
+		write-concern="MAJORITY" />
+
+							<!--  REST TEMPLATE CONTEXT CONFIGURATION -->
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" >
+		 <constructor-arg name="requestFactory" ref="healthRequestFactory"/>  
+		 <property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	
 </beans>
