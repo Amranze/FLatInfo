@@ -1,5 +1,8 @@
 package flatinfo.core.models.entities.flat;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class ContactInfo {
 	private FlatAddress address;
 	private String city;

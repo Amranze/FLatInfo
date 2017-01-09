@@ -1,5 +1,7 @@
 package flatinfo.core.services.impl;
 
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +12,9 @@ import flatinfo.core.services.OwnerEntityService;
 import flatinfo.core.services.util.OwnerEntityList;
 
 @Service
+//@Repository
 @Transactional
+//@EnableMongoRepositories(basePackages = "flatinfo.core.repository")
 public class OwnerEntityServiceImpl implements OwnerEntityService{
 
 	@Override

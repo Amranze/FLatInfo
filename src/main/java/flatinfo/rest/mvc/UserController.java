@@ -34,6 +34,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import flatinfo.core.models.entities.user.UserEntity;
+import flatinfo.core.repositories.UserRepository;
 import flatinfo.core.services.UserEntityService;
 import flatinfo.core.services.util.UserEntityList;
 
@@ -43,13 +44,19 @@ import flatinfo.core.services.util.UserEntityList;
 @SessionAttributes("user")
 public class UserController {
 	
-	private UserEntityService userService;
+	private UserEntityService userRepo;
 	
 	private DBCollection userCollection = MongodbConnection();
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	public UserController(UserEntityService userService) {
-		this.userService = userService;
+	@Autowired
+	public UserController(UserEntityService userRepo) {
+		this.userRepo = userRepo;
+	}
+	
+	@RequestMapping(value="/getAllFromRepo", method=RequestMethod.GET)
+	public UserEntityList getUsers(){
+		return userRepo.findAllUsers();
 	}
 
 	@RequestMapping(value="/index", method=RequestMethod.GET)
@@ -291,12 +298,13 @@ public class UserController {
 	
 
 	public UserEntity getUser(long id) {
-		return userService.findById(id);
+		//return userRepo.findUser(id);
+		return userRepo.findById(id);
 	}
-	
-	public UserEntityList getAll(){
-		return userService.findAllUsers();
-	}
+//	
+//	public UserEntityList getAll(){
+//		return userService.findAllUsers();
+//	}
 
 	@SuppressWarnings("deprecation")
 	private DBCollection MongodbConnection() {

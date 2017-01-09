@@ -3,6 +3,7 @@ package flatinfo.core.models.entities.user;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import flatinfo.core.models.entities.flat.FlatEntity;
@@ -11,6 +12,7 @@ import flatinfo.core.models.entities.flat.FlatEntity;
 @Document(collection="userCollection")
 public class UserEntity {
 	//TODO will I need the id
+	@Id
 	private long id;
 	private String firstName;
 	private String lastName;

@@ -8,12 +8,12 @@ import flatinfo.core.models.entities.owner.OwnerEntity;
 import flatinfo.core.models.entities.user.UserEntity;
 import flatinfo.core.models.enums.FlatType;
 
-@Document
+@Document(collection="flatcollection")
 public class FlatEntity {
 	private long id;
 	//TODO delete id because in Mongodb you have _id that stores timestamp
 	private FlatType type;
-	private ContactInfo flatInfo;
+	private ContactInfo contactInfo;
 	private boolean furnished;
 	private String area;
 	private double price;
@@ -31,13 +31,13 @@ public class FlatEntity {
 	public FlatEntity() {
 		super();
 	}
-	public FlatEntity(long id, FlatType type, ContactInfo flatInfo, boolean furnished, String area, double price,
+	public FlatEntity(long id, FlatType type, ContactInfo contactInfo, boolean furnished, String area, double price,
 			double priceOfLoad, String advantages, String problems, String rating, List<String> pictures,
 			List<UserEntity> users, OwnerEntity owner, Convenience conveniences) {
 		super();
 		this.id = id;
 		this.type = type;
-		this.flatInfo = flatInfo;
+		this.contactInfo = contactInfo;
 		this.furnished = furnished;
 		this.area = area;
 		this.price = price;
@@ -63,10 +63,10 @@ public class FlatEntity {
 		this.type = type;
 	}
 	public ContactInfo getFlatInfo() {
-		return flatInfo;
+		return contactInfo;
 	}
-	public void setFlatInfo(ContactInfo flatInfo) {
-		this.flatInfo = flatInfo;
+	public void setFlatInfo(ContactInfo contactInfo) {
+		this.contactInfo = contactInfo;
 	}
 	public boolean isFurnished() {
 		return furnished;

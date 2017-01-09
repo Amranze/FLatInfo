@@ -1,23 +1,31 @@
 package flatinfo.core.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import flatinfo.core.models.entities.flat.FlatEntity;
 import flatinfo.core.models.entities.owner.OwnerEntity;
 import flatinfo.core.models.entities.user.UserEntity;
-import flatinfo.core.repositories.mongodb.MongoDBUserRepo;
+import flatinfo.core.repositories.UserRepository;
 import flatinfo.core.services.UserEntityService;
 import flatinfo.core.services.util.UserEntityList;
 
 
 @Service
+//@Repository
 @Transactional
+//@EnableMongoRepositories(basePackages = "flatinfo.core.repository")
 public class UserEntityServiceImpl implements UserEntityService{
-
+	
 	@Autowired
-	private MongoDBUserRepo mongoRepo;
+    MongoTemplate mongoTemplate;
+	
+	@Autowired 
+	private UserRepository userEntityRepo;
 	
 	@Override
 	public UserEntity findById(Long id) {
@@ -51,14 +59,13 @@ public class UserEntityServiceImpl implements UserEntityService{
 
 	@Override
 	public UserEntityList findAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return (UserEntityList) mongoTemplate.findAll(UserEntity.class);
 	}
 
 	@Override
 	public UserEntity addUser(UserEntity user) {
-		// TODO Auto-generated method stub
-		return null;
+		mongoTemplate.save(user);
+		return user;
 	}
 
 	@Override
