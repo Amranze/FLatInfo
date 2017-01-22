@@ -1,29 +1,26 @@
 package flatinfo.rest.mvc;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mongodb.BasicDBObject;
@@ -34,29 +31,34 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import flatinfo.core.models.entities.user.UserEntity;
-import flatinfo.core.repositories.UserRepository;
+import flatinfo.core.repositories.impl.UserRepositoryImpl;
 import flatinfo.core.services.UserEntityService;
 import flatinfo.core.services.util.UserEntityList;
 
 //@RestController
 @Controller
 @RequestMapping(value = "/user")
-@SessionAttributes("user")
+@SessionAttributes("userSession")
 public class UserController {
 	
-	private UserEntityService userRepo;
-	
+	private UserRepositoryImpl userRepo;
+	private static PictureUploadController pictureUploadController = new PictureUploadController();
+	private final static String USERSESSION = "userSession";
+	private final static String ROOTPATH = "C:\\Users\\Amrane Ait Zeouay\\Desktop\\Projects\\FlatInfo\\target\\tomcat\\";
+	private final static String USERPICTURESPATH = "user\\picture\\";
+
 	private DBCollection userCollection = MongodbConnection();
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
-	public UserController(UserEntityService userRepo) {
+	public UserController(UserRepositoryImpl userRepo) {
 		this.userRepo = userRepo;
 	}
 	
 	@RequestMapping(value="/getAllFromRepo", method=RequestMethod.GET)
 	public UserEntityList getUsers(){
-		return userRepo.findAllUsers();
+		logger.debug(userRepo.findAll().get(0).toString());
+		return null;
 	}
 
 	@RequestMapping(value="/index", method=RequestMethod.GET)
@@ -108,7 +110,6 @@ public class UserController {
 	
 	
 	public UserEntity convertDBObjectToUserEntity(DBObject userCursor) {
-		@SuppressWarnings("unchecked")
 		UserEntity newUser = new UserEntity(
 				1L,
 				(String)userCursor.get("firstName"),
@@ -124,7 +125,9 @@ public class UserController {
 				(int)userCursor.get("postalCode"),
 				(String)userCursor.get("city"),
 				(String)userCursor.get("country"),
-				1L,true,null,null,"",null,null
+				1L,true,
+				(String)userCursor.get("profilePicture"),
+				null,null,"",null,null
 				);
 		
 		/*UserEntity newUser = new UserEntity(
@@ -160,7 +163,6 @@ public class UserController {
 			mv.setViewName("user/login");
 			return mv;
 		}
-		
 		mv.setViewName("user/profile");
 		return mv;
 	}
@@ -168,6 +170,8 @@ public class UserController {
 	@RequestMapping(value="logout", method=RequestMethod.GET)
 	public String logout(ModelAndView mv, HttpSession session){
 		session.removeAttribute("userSession");
+		if(session.getAttribute("userSession") != null)
+			session.invalidate();
         return "redirect:/";
 	}
 	
@@ -183,9 +187,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="signup", method=RequestMethod.POST)
-	public ModelAndView signup(ModelAndView mv, @ModelAttribute("user") UserEntity user, BindingResult result, HttpSession session){
-		logger.debug("Signup Post : "+user.getPassword()+
-				" F "+user.getFirstName()+" L "+user.getLastName()+ " M "+user.getMail() + " U "+user.getUsername());
+	public ModelAndView signup(ModelAndView mv, @ModelAttribute("user") UserEntity user, 
+			BindingResult result, HttpSession session){
+		logger.debug("Signup Post : "+user.getPassword()+ " F "+user.getFirstName()+" L "+user.getLastName()+ 
+				" M "+user.getMail() + " U "+user.getUsername());
 		BasicDBObject userDBObject = userEntityToDBObject(user);
 		try {
 			userCollection.insert(userDBObject);
@@ -205,15 +210,51 @@ public class UserController {
 	
 	@RequestMapping(value="/profile", method=RequestMethod.GET)
 	public ModelAndView getProfile(ModelAndView mv, HttpSession session, @RequestHeader(value = "referer", required = false) final String previousURL){
-
-		if(session.getAttribute("userSession") == null) {
+		if(session.getAttribute(USERSESSION) == null) {
 			mv.addObject("Message", "You need to log in to access to the specified page");
 			logger.debug("previousURL : "+previousURL);
 			mv.addObject("previousUrl", previousURL);
+			mv.addObject("user", new UserEntity());
 			mv.setViewName("user/login");	
 			return mv;
 		}
 		mv.setViewName("user/profile");
+		return mv;
+	}
+	
+	@RequestMapping(value="/savePicture", method = RequestMethod.POST)
+	public ModelAndView savePicture(ModelAndView mv, HttpSession session, 
+			@RequestParam("profilePicture") MultipartFile profilePicture){
+		if(session.getAttribute(USERSESSION) == null){
+			logger.debug("savePicture null");
+			addUserToModel(mv, "user/login");
+			return mv;
+		}
+		boolean isSaved = false;
+		if(profilePicture == null || profilePicture.isEmpty()){
+			logger.debug("savePicture picture empty");
+			mv.addObject("ErrorMessage", "There was a problem while downloading the picture, Please try again");
+			mv.setViewName("user/profile");
+		} else {
+			logger.debug("savePicture else");
+			UserEntity user = (UserEntity) session.getAttribute("userSession");
+			String picturePath = pictureUploadController.uploadFileHandler(user.getUsername(), profilePicture);
+			if(picturePath.contains(profilePicture.getOriginalFilename())){
+				logger.debug("savePicture isSaved"+picturePath);
+				LinkedHashSet<String> pictures = user.getPictures();
+				if(pictures == null)
+					pictures = new LinkedHashSet<>();
+				pictures.add(picturePath);
+				user.setProfilePicture(picturePath);
+				user.setPictures(pictures);
+				userRepo.save(user);
+				session.setAttribute("userSession", user);
+				mv.setViewName("user/profile");
+			} else {
+				mv.addObject("ErrorMessage", picturePath);
+				mv.setViewName("user/profile");
+			}	
+		}
 		return mv;
 	}
 	
@@ -232,7 +273,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/edit", method=RequestMethod.POST)
-	public ModelAndView editProfile(ModelAndView mv, @ModelAttribute("userForm") UserEntity user, HttpSession session, BindingResult bindingResult){
+	public ModelAndView editProfile(ModelAndView mv, @ModelAttribute("userForm") UserEntity user, 
+			HttpSession session, BindingResult bindingResult){
 	    if (bindingResult.hasErrors()) {
 	        //errors processing
 	    }
@@ -258,6 +300,7 @@ public class UserController {
 		return mv;
 	}
 	
+	@SuppressWarnings("null")
 	@RequestMapping(value="/Users", method=RequestMethod.GET)
 	public List<DBObject> getAllUsers(){
 		DBCursor userCursor = userCollection.find();
@@ -299,7 +342,19 @@ public class UserController {
 
 	public UserEntity getUser(long id) {
 		//return userRepo.findUser(id);
-		return userRepo.findById(id);
+		return userRepo.findUser(id);
+	}
+	
+	public void addUserToModel(ModelAndView mv, String view){
+		mv.addObject("user", new UserEntity());
+		mv.setViewName(view);
+	}
+	
+	private LinkedHashSet<String> getUserPictures(HttpSession session){
+		LinkedHashSet<String> pictures = new LinkedHashSet<>();
+		UserEntity user = (UserEntity) session.getAttribute("userSession");
+		pictures = user.getPictures();
+		return pictures;
 	}
 //	
 //	public UserEntityList getAll(){
@@ -308,6 +363,7 @@ public class UserController {
 
 	@SuppressWarnings("deprecation")
 	private DBCollection MongodbConnection() {
+		@SuppressWarnings("resource")
 		MongoClient mongo = new MongoClient("localhost", 27017);
 		DB db = mongo.getDB("flat");
 		DBCollection usercollection = db.getCollection("userCollection");

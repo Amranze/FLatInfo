@@ -147,7 +147,7 @@ public class OwnerRepositoryImpl implements OwnerRepository{
 	}
 
 	@Override
-	public OwnerEntityList findAllOwners() {
+	public List<OwnerEntity> findAllOwners() {
 		// TODO Auto-generated method stub
 		return null;
 	}

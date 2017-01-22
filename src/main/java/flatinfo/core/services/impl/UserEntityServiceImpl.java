@@ -2,8 +2,6 @@ package flatinfo.core.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +57,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 
 	@Override
 	public UserEntityList findAllUsers() {
-		return (UserEntityList) mongoTemplate.findAll(UserEntity.class);
+		return new UserEntityList(mongoTemplate.findAll(UserEntity.class));
 	}
 
 	@Override

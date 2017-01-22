@@ -107,6 +107,12 @@
                 <span id="reauth-email" class="reauth-email"></span>
                 <form:input type="text" path="mail" name="inputUser" id="inputEmail" class="form-control" placeholder="Email address" required="required" />
                 <form:input type="password" path="password" name="inputpwd" id="inputPassword" class="form-control" placeholder="Password" required="required" />
+                <c:if test="${empty ErrorMessage}"></c:if>
+          		<c:if test="${not empty ErrorMessage}">
+	          		<div class="field-wrap">
+	            		<div class="ErrorMessage" id="ErrorMessage">${ErrorMessage}</div>
+	          		</div>
+          		</c:if>
                 <div id="remember" class="checkbox">
                     <label>
                         <input type="checkbox" value="remember-me" name="remember-me"> Remember me

@@ -1,15 +1,21 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html ng-app="ProfileApp">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/controller/profileController.js"></script>
+
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile.css">
+
 <script type="text/javascript">
 $(function () {
 	  $('[data-toggle="tooltip"]').tooltip();
@@ -19,8 +25,101 @@ $(function () {
 	  $('[data-toggle="popover"]').popover();
 	});
 </script>
+<script type="text/javascript">
+	$("#cornerLink").click(function() {
+	    $("input[id='my_profile_picture']").click();
+	});
+</script>
+<script type="text/javascript">
+
+	function readURL(input) {
+
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+
+	        reader.onload = function (e) {
+	            $('#imgModal').attr('src', e.target.result);
+	        }
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+
+	$("#my_profile_picture").change(function(){
+	    readURL(this);
+	});
+</script>
+
+<script>
+
+  var loadFile = function(event) {
+	//$("input[id='btnModal']").click();
+	//document.getElementById('myBtn').click();
+    var output = document.getElementById('imgModal');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    $('#myModal').modal('show');
+  };
+  /*var modal = document.getElementById('myModal');
+  window.onclick = function(event) {
+	  console.log(6);
+	    if (event.target == modal) {
+	  	  	console.log(5);
+	        modal.style.display = "none";
+	    }
+	}*/
+</script>
+
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1} 
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none"; 
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block"; 
+  dots[slideIndex-1].className += " active";
+}
+/*function centerModal() {
+    $(this).css('display', 'block');
+    var $dialog = $(this).find(".modal-dialog");
+    var offset = ($(window).height() - $dialog.height()) / 2;
+    // Center modal vertically in window
+    $dialog.css("margin-top", offset);
+}
+
+$('.modal').on('show.bs.modal', centerModal);
+$(window).on("resize", function () {
+    $('.modal:visible').each(centerModal);
+});*/
+</script>
+
+<script>
+/*$(window).load(function(){
+    $('#myModal').modal('show');
+});
+*/
+
+
+</script>
+
 </head>
-<body>
+<body ng-controller="MainController">
 <div class="mainbody container-fluid">
     <div class="row">
         <div class="navbar-wrapper">
@@ -102,9 +201,51 @@ $(function () {
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="media">
-                        <div align="center">
-                            <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" width="300px" height="300px">
-                        </div>
+                    <form method="post" action="savePicture" enctype="multipart/form-data">
+	                    	<div class="imageWrapper" align="center">
+								<c:if test="${empty userSession.getProfilePicture()}">
+									<img class="thumbnail img-responsive" src="${pageContext.request.contextPath}/resources/img/user/picture/no_user_man_place_holder.png" width="300px" height="300px" alt="" />
+								</c:if>
+								<c:if test="${not empty userSession.getProfilePicture()}">
+									<img class="thumbnail img-responsive" src="${pageContext.request.contextPath}/resources/img/user/picture/${ userSession.getProfilePicture() }" width="300px" height="300px" alt="" />	          	
+								</c:if>							    
+								<a href="#" class="cornerLink" onclick="$('#my_profile_picture').trigger('click'); return false;">Change your profile picture</a>
+							    <input type="file" accept="image/*" onChange="loadFile(event)" name="profilePicture" id="my_profile_picture" style="display: none;"/>							    					  
+							</div>
+						
+						  <!-- Modal -->
+						  <div class="modal fade" id="myModal" role="dialog">
+						    <div class="modal-dialog">
+						    
+						      <!-- Modal content-->
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Modal Header</h4>
+						        </div>
+						        <div class="modal-body">
+						          	<img id="imgModal" src="#" alt="your image" />
+						          	   <div class="modal-footer">
+									    <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+									    <button type="submit" id="save" class="btn btn-width bkgrnd-cyan save-details" name="save-details">Save</button>
+									  </div>
+						        </div>
+						      </div>
+						      
+						    </div>
+						  </div>
+							
+							<!-- <button type="button" id="btnModal" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display: none;"></button>
+							<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">							
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							        <div class="modal-body">
+										<img id="blah" src="#" alt="your image" />
+							        </div>
+							    </div>
+							  </div>
+							</div> -->
+						</form>
                         <div class="media-body">
                             <hr>
                             <h3><strong>Bio</strong></h3>
@@ -136,7 +277,7 @@ $(function () {
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                 <li><a href="#">Familly</a></li>
                                 <li><a href="#"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Friends</a></li>
-                                <li><a href="#">Work</a></li>
+                                <li><a href="#work">Work</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Add a new aspect</a></li>
                             </ul>
@@ -147,9 +288,10 @@ $(function () {
                     <br><br><hr>
                     <span class="pull-left">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Posts</a>
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span></a>
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span></a>
+                        <a href="#/pictures" ui-sref="pictures" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span></a>
+                        <a href="#/friends" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span></a>
                     </span>
+                    <div ng-view></div>
                     <span class="pull-right">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-at" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Mention"></i></a>
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>

@@ -1,6 +1,7 @@
 package flatinfo.core.models.entities.user;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -29,10 +30,11 @@ public class UserEntity {
 	private String country;
 	private long lastConnection;
 	private boolean Active;
-	private List<String> pictures;
+	private String profilePicture;
+	private LinkedHashSet<String> pictures;
 	private List<FlatEntity> flats;
 	private String stayingTime;
-	//What need to be showen
+	//What need to be shown
 	private ShowInfo infoToShow;
 	//Social Network
 	private SocialNetwork socialNetwork;
@@ -46,11 +48,14 @@ public class UserEntity {
 	public UserEntity() {
 		super();
 	}
-	
-	public UserEntity(long id, String firstName, String lastName, String mail, String username, String password,
-			Date birthdate, int age, String gender, String phone, String adresse, int postalCode, String city,
-			String country, long lastConnection, boolean active, List<String> pictures, List<FlatEntity> flats,
-			String stayingTime, ShowInfo infoToShow, SocialNetwork socialNetwork) {
+
+	public UserEntity(long id, String firstName, String lastName, String mail,
+			String username, String password, Date birthdate, int age,
+			String gender, String phone, String adresse, int postalCode,
+			String city, String country, long lastConnection, boolean active,
+			String profilePicture, LinkedHashSet<String> pictures,
+			List<FlatEntity> flats, String stayingTime, ShowInfo infoToShow,
+			SocialNetwork socialNetwork) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -68,14 +73,13 @@ public class UserEntity {
 		this.country = country;
 		this.lastConnection = lastConnection;
 		Active = active;
+		this.profilePicture = profilePicture;
 		this.pictures = pictures;
 		this.flats = flats;
 		this.stayingTime = stayingTime;
 		this.infoToShow = infoToShow;
 		this.socialNetwork = socialNetwork;
 	}
-
-
 
 	public long getId() {
 		return id;
@@ -173,12 +177,13 @@ public class UserEntity {
 	public void setActive(boolean active) {
 		Active = active;
 	}
-	public List<String> getPictures() {
+	public LinkedHashSet<String> getPictures() {
 		return pictures;
 	}
-	public void setPictures(List<String> pictures) {
+	public void setPictures(LinkedHashSet<String> pictures) {
 		this.pictures = pictures;
 	}
+
 	public List<FlatEntity> getFlats() {
 		return flats;
 	}
@@ -203,16 +208,25 @@ public class UserEntity {
 	public void setSocialNetwork(SocialNetwork socialNetwork) {
 		this.socialNetwork = socialNetwork;
 	}
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
 
 	@Override
 	public String toString() {
-		return "UserEntity [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", mail=" + mail
-				+ ", username=" + username + ", password=" + password + ", birthdate=" + birthdate + ", age=" + age
-				+ ", gender=" + gender + ", phone=" + phone + ", adresse=" + adresse + ", postalCode=" + postalCode
-				+ ", city=" + city + ", country=" + country + ", lastConnection=" + lastConnection + ", Active="
-				+ Active + ", pictures=" + pictures + ", flats=" + flats + ", stayingTime=" + stayingTime
-				+ ", infoToShow=" + infoToShow + ", socialNetwork=" + socialNetwork + "]";
-	}
-	
-	
+		return "UserEntity [id=" + id + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", mail=" + mail + ", username="
+				+ username + ", password=" + password + ", birthdate="
+				+ birthdate + ", age=" + age + ", gender=" + gender
+				+ ", phone=" + phone + ", adresse=" + adresse + ", postalCode="
+				+ postalCode + ", city=" + city + ", country=" + country
+				+ ", lastConnection=" + lastConnection + ", Active=" + Active
+				+ ", profilePicture=" + profilePicture + ", pictures="
+				+ pictures + ", flats=" + flats + ", stayingTime="
+				+ stayingTime + ", infoToShow=" + infoToShow
+				+ ", socialNetwork=" + socialNetwork + "]";
+	}	
 }

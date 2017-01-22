@@ -8,11 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import com.mongodb.DBObject;
 
 import flatinfo.core.models.entities.user.UserEntity;
 import flatinfo.core.repositories.UserRepository;
-import flatinfo.core.services.util.UserEntityList;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
@@ -72,11 +74,6 @@ public class UserRepositoryImpl implements UserRepository{
 		return null;
 	}
 
-	@Override
-	public <S extends UserEntity> S save(S entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public UserEntity findOne(String id) {
@@ -151,7 +148,7 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	public UserEntityList findAllUsers() {
+	public List<UserEntity> findAllUsers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -174,4 +171,39 @@ public class UserRepositoryImpl implements UserRepository{
 		return null;
 	}
 
+	@Override
+	public void findUserAndModify(UserEntity user) {
+		/*Query searchUserQuery = new Query(Criteria.where("username").is(user.getUsername()));
+		UserEntity savedUser = mongoTemplate.findOne(searchUserQuery, UserEntity.class);
+		//Update update = fromDBObjectExcludeNullFields();
+		if(savedUser != null) System.out.println(savedUser.toString());
+		if(savedUser == null || savedUser.equals(null))*/
+			//mongoTemplate.findAndModify(searchUserQuery, Update.update("", value), UserEntity.class);
+		save(user);
+	}
+	
+	public static Update fromDBObjectExcludeNullFields(DBObject object) {
+	    Update update = new Update();       
+	    for (String key : object.keySet()) {
+	        Object value = object.get(key);
+	        if(value!=null){
+	            update.set(key, value);
+	        }
+	    }
+	    return update;
+	}
+
+	@Override
+	public <S extends UserEntity> S save(S user) {
+		mongoTemplate.save(user);
+		return user;
+		/*Query searchUserQuery = new Query(Criteria.where("username").is(user.getUsername()));
+		UserEntity savedUser = mongoTemplate.findOne(searchUserQuery, UserEntity.class);
+		if(savedUser == null || savedUser.equals(null))
+			mongoTemplate.insert(user);
+		else
+			mongoTemplate.updateFirst(searchUserQuery, new Update(), UserEntity.class);
+			//mongoTemplate.findAndModify(searchUserQuery, Update.update("", value), UserEntity.class);
+		return user;*/
+	}
 }

@@ -1,14 +1,10 @@
 package flatinfo.rest.mvc;
 
-import java.util.List;
 
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -104,6 +100,7 @@ public class FlatController {
 	
 	@SuppressWarnings("deprecation")
 	private DBCollection MongodbConnection() {
+		@SuppressWarnings("resource")
 		MongoClient mongo = new MongoClient("localhost", 27017);
 		DB db = mongo.getDB("flat");
 		System.out.println(db.getCollectionNames());

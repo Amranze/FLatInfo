@@ -1,9 +1,7 @@
 package flatinfo.rest.mvc;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,9 +71,10 @@ public class OwnerController {
 	
 	@SuppressWarnings("deprecation")
 	private DBCollection MongodbConnection() {
-		BasicDBObject keys = new BasicDBObject();
+		//BasicDBObject keys = new BasicDBObject();
 		//keys.put("username", 1);
 		//keys.put("mail", 2);
+		@SuppressWarnings("resource")
 		MongoClient mongo = new MongoClient("localhost", 27017);
 		DB db = mongo.getDB("flat");
 		DBCollection ownercollection = db.getCollection("ownerCollection");

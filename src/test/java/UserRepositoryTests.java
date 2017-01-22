@@ -10,12 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import flatinfo.core.models.entities.user.UserEntity;
-import flatinfo.core.repositories.UserRepository;
 import flatinfo.core.repositories.impl.UserRepositoryImpl;
 import flatinfo.core.services.UserEntityService;
-import flatinfo.core.services.impl.UserEntityServiceImpl;
-import flatinfo.core.services.util.UserEntityList;
-import flatinfo.rest.exceptions.UserProblemException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/application-context.xml" })
@@ -32,12 +28,12 @@ public class UserRepositoryTests {
 	
 	UserEntity user1;
 
-	/*@Before
+	@Before
 	public void setUp() {
 
-		userRepo.deleteAll();
+		//userRepo1.deleteAll();
 
-		user1 = userRepo.save(new UserEntity(
+		/*user1 = userRepo1.save(new UserEntity(
 				1L,
 				"firstName",
 				"lastName",
@@ -52,26 +48,16 @@ public class UserRepositoryTests {
 				15487,
 				"city",
 				"country",
-				1L,true,null,null,"",null,null
-				));
-	}*/
-	
-	/*
-	@Test
-    public void readsFirstPageCorrectly() {
-
-      UserEntityList users = userRepo.findAllUsers();
-      if(users == null)
-    	  throw new UserProblemException("There is no users");
-      for(int i=0;i<users.getUsers().size();i++)
-    	  logger.debug("User "+i+" : "+users.getUsers().get(i).toString());
-    }*/
+				1L,true,null,null,null, "",null,null
+				));*/
+	}
 	
 	@Test
 	public void test(){
-		/*user1 = userRepo.addUser(new UserEntity(
+		logger.debug("Just to stop the error");
+		user1 = new UserEntity(
 				1L,
-				"firstName",
+				"AMrane",
 				"lastName",
 				"mail",
 				"username",
@@ -84,14 +70,11 @@ public class UserRepositoryTests {
 				15487,
 				"city",
 				"country",
-				1L,true,null,null,"",null,null
-				));
-		if(user1 == null){
-			logger.debug("Null");
-		}*/
-		
-		logger.debug("Just to stop the error");
+				1L,true,null,null,null, "",null,null
+				);
+		userRepo1.findUserAndModify(user1);
+		logger.debug(user1.toString());
+		//userRepo.updateUser(user1);
 		logger.debug("User "+ userRepo1.findAll());
-		//logger.debug("User "+ userRepo.findAllUsers());
 	}
 }

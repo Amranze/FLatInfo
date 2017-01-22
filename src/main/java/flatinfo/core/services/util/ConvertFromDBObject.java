@@ -27,7 +27,9 @@ public class ConvertFromDBObject {
 				(int)userCursor.get("postalCode"),
 				(String)userCursor.get("city"),
 				(String)userCursor.get("country"),
-				1L,true,null,null,"",null,null
+				1L,true,
+				(String)userCursor.get("profilePicture"),
+				null,null,"",null,null
 				);
 		
 		/*UserEntity newUser = new UserEntity(

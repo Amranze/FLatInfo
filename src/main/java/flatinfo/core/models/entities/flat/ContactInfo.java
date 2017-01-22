@@ -33,7 +33,7 @@ public class ContactInfo {
 		return country;
 	}
 	public void setCountry(String country) {
-		country = country;
+		this.country = country;
 	}
 	
 	
