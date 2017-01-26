@@ -23,5 +23,7 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
-	<mvc:resources mapping="/resources/**" location="/resources/" cache-period="31556926"/>	
+	<mvc:resources mapping="/resources/**" location="/resources/" cache-period="31556926"/>
+	<mvc:resources mapping="/user/partials/**" location="/partials/" cache-period="31556926"/>
+
 </beans>

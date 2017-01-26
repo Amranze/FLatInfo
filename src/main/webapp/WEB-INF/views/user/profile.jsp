@@ -5,15 +5,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
+<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+
 <script src="${pageContext.request.contextPath}/resources/js/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/angular-route.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/controller/profileController.js"></script>
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile.css">
 
 <script type="text/javascript">
@@ -69,7 +70,7 @@ $(function () {
 </script>
 
 <script>
-var slideIndex = 1;
+/*var slideIndex = 1;
 showSlides(slideIndex);
 
 function plusSlides(n) {
@@ -94,7 +95,7 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block"; 
   dots[slideIndex-1].className += " active";
-}
+}*/
 /*function centerModal() {
     $(this).css('display', 'block');
     var $dialog = $(this).find(".modal-dialog");
@@ -196,7 +197,7 @@ $(window).on("resize", function () {
                 </div>
             </div>
         </div>
-        <div style="padding-top:50px;"> </div>
+        <div style="padding-top:50px;"></div>
         <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -288,9 +289,13 @@ $(window).on("resize", function () {
                     <br><br><hr>
                     <span class="pull-left">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Posts</a>
-                        <a href="#/pictures" ui-sref="pictures" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span></a>
-                        <a href="#/friends" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span></a>
+                        <a href="#pictures" ui-sref="pictures" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span></a>
+                        <a href="#friends" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span></a>
                     </span>
+
+
+                    {{ info }}
+
                     <div ng-view></div>
                     <span class="pull-right">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-at" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Mention"></i></a>
