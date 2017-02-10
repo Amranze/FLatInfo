@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +57,13 @@ public class UserRepositoryTests {
 	@Test
 	public void test(){
 		logger.debug("Just to stop the error");
+		List<String> friends = new ArrayList<>();
+		friends.add("Amrane");
+		friends.add("Simona");
+		friends.add("Zineb");
+		friends.add("Amine");
+		friends.add("MEMEME");
+		friends.add("Hamada");
 		user1 = new UserEntity(
 				1L,
 				"AMrane",
@@ -70,7 +79,7 @@ public class UserRepositoryTests {
 				15487,
 				"city",
 				"country",
-				1L,true,null,null,null, "",null,null
+				1L,true,null,null,null,friends, "",null,null
 				);
 		userRepo1.findUserAndModify(user1);
 		logger.debug(user1.toString());

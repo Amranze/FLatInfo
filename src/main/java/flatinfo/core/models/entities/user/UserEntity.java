@@ -33,6 +33,7 @@ public class UserEntity {
 	private String profilePicture;
 	private LinkedHashSet<String> pictures;
 	private List<FlatEntity> flats;
+	private List<String> friends;
 	private String stayingTime;
 	//What need to be shown
 	private ShowInfo infoToShow;
@@ -49,12 +50,10 @@ public class UserEntity {
 		super();
 	}
 
-	public UserEntity(long id, String firstName, String lastName, String mail,
-			String username, String password, Date birthdate, int age,
-			String gender, String phone, String adresse, int postalCode,
-			String city, String country, long lastConnection, boolean active,
-			String profilePicture, LinkedHashSet<String> pictures,
-			List<FlatEntity> flats, String stayingTime, ShowInfo infoToShow,
+	public UserEntity(long id, String firstName, String lastName, String mail, String username, String password,
+			Date birthdate, int age, String gender, String phone, String adresse, int postalCode, String city,
+			String country, long lastConnection, boolean active, String profilePicture, LinkedHashSet<String> pictures,
+			List<FlatEntity> flats, List<String> friends, String stayingTime, ShowInfo infoToShow,
 			SocialNetwork socialNetwork) {
 		super();
 		this.id = id;
@@ -76,10 +75,12 @@ public class UserEntity {
 		this.profilePicture = profilePicture;
 		this.pictures = pictures;
 		this.flats = flats;
+		this.friends = friends;
 		this.stayingTime = stayingTime;
 		this.infoToShow = infoToShow;
 		this.socialNetwork = socialNetwork;
 	}
+
 
 	public long getId() {
 		return id;
@@ -214,19 +215,22 @@ public class UserEntity {
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture = profilePicture;
 	}
+	public List<String> getFriends() {
+		return friends;
+	}
 
+	public void setFriends(List<String> friends) {
+		this.friends = friends;
+	}
+	
 	@Override
 	public String toString() {
-		return "UserEntity [id=" + id + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", mail=" + mail + ", username="
-				+ username + ", password=" + password + ", birthdate="
-				+ birthdate + ", age=" + age + ", gender=" + gender
-				+ ", phone=" + phone + ", adresse=" + adresse + ", postalCode="
-				+ postalCode + ", city=" + city + ", country=" + country
-				+ ", lastConnection=" + lastConnection + ", Active=" + Active
-				+ ", profilePicture=" + profilePicture + ", pictures="
-				+ pictures + ", flats=" + flats + ", stayingTime="
-				+ stayingTime + ", infoToShow=" + infoToShow
+		return "UserEntity [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", mail=" + mail
+				+ ", username=" + username + ", password=" + password + ", birthdate=" + birthdate + ", age=" + age
+				+ ", gender=" + gender + ", phone=" + phone + ", adresse=" + adresse + ", postalCode=" + postalCode
+				+ ", city=" + city + ", country=" + country + ", lastConnection=" + lastConnection + ", Active="
+				+ Active + ", profilePicture=" + profilePicture + ", pictures=" + pictures + ", flats=" + flats
+				+ ", friends=" + friends + ", stayingTime=" + stayingTime + ", infoToShow=" + infoToShow
 				+ ", socialNetwork=" + socialNetwork + "]";
-	}	
+	}
 }

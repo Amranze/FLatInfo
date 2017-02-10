@@ -5,16 +5,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
-<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-
 <script src="${pageContext.request.contextPath}/resources/js/angular.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/angular-route.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/controller/profileController.js"></script>
 
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile.css">
 
 <script type="text/javascript">
@@ -32,15 +31,19 @@ $(function () {
 	});
 </script>
 <script type="text/javascript">
+
 	function readURL(input) {
+
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
+
 	        reader.onload = function (e) {
 	            $('#imgModal').attr('src', e.target.result);
 	        }
 	        reader.readAsDataURL(input.files[0]);
 	    }
 	}
+
 	$("#my_profile_picture").change(function(){
 	    readURL(this);
 	});
@@ -49,10 +52,70 @@ $(function () {
 <script>
 
   var loadFile = function(event) {
+	//$("input[id='btnModal']").click();
+	//document.getElementById('myBtn').click();
     var output = document.getElementById('imgModal');
     output.src = URL.createObjectURL(event.target.files[0]);
     $('#myModal').modal('show');
   };
+  /*var modal = document.getElementById('myModal');
+  window.onclick = function(event) {
+	  console.log(6);
+	    if (event.target == modal) {
+	  	  	console.log(5);
+	        modal.style.display = "none";
+	    }
+	}*/
+</script>
+
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1} 
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none"; 
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block"; 
+  dots[slideIndex-1].className += " active";
+}
+/*function centerModal() {
+    $(this).css('display', 'block');
+    var $dialog = $(this).find(".modal-dialog");
+    var offset = ($(window).height() - $dialog.height()) / 2;
+    // Center modal vertically in window
+    $dialog.css("margin-top", offset);
+}
+
+$('.modal').on('show.bs.modal', centerModal);
+$(window).on("resize", function () {
+    $('.modal:visible').each(centerModal);
+});*/
+</script>
+
+<script>
+/*$(window).load(function(){
+    $('#myModal').modal('show');
+});
+*/
+
+
 </script>
 
 </head>
@@ -76,7 +139,7 @@ $(function () {
                         </div>
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                <li><a href="./flats">My Flats</a></li>
+                                <li><a href="./ORqmj">Stream</a></li>
                                 <li><a href="#">My Activity</a></li>
                                 <li><span class="badge badge-important">2</span><a href="#"><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a></li>
                                 <li><a href="#"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i></a></li>
@@ -99,10 +162,10 @@ $(function () {
                                                         <p class="text-center small">
                                                             <a href="./3X6zm">Change Photo</a></p>
                                                     </div>
-                                                    <div class="col-md-7" ng-init="Id=${userSession.getId()}">
-                                                        <span>{ user.get("username") }</span>
+                                                    <div class="col-md-7">
+                                                        <span>{ userSession.getUsername() }</span>
                                                         <p class="text-muted small">
-                                                            { user.get("mail") }</p>
+                                                            { userSession.getMail() }</p>
                                                         <div class="divider">
                                                         </div>
                                                         <a href="./56ExR" class="btn btn-default btn-xs"><i class="fa fa-user-o" aria-hidden="true"></i> Profile</a>
@@ -133,7 +196,7 @@ $(function () {
                 </div>
             </div>
         </div>
-        <div style="padding-top:50px;"></div>
+        <div style="padding-top:50px;"> </div>
         <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -225,13 +288,10 @@ $(function () {
                     <br><br><hr>
                     <span class="pull-left">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Posts</a>
-                        <a href="#pictures" ui-sref="pictures" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span></a>
-                        <a href="#friends" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span></a>
+                        <a href="#/pictures" ui-sref="pictures" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span></a>
+                        <a href="#/friends" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span></a>
                     </span>
-
-
-                    {{ info }}
-
+                    <div ng-view></div>
                     <span class="pull-right">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-at" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Mention"></i></a>
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>
@@ -240,7 +300,6 @@ $(function () {
                 </div>
             </div>
             <hr>
-            <div ng-view></div>
             <!-- Simple post content example. -->
             <div class="panel panel-default">
                 <div class="panel-body">

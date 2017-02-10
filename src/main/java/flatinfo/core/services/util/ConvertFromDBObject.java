@@ -29,7 +29,7 @@ public class ConvertFromDBObject {
 				(String)userCursor.get("country"),
 				1L,true,
 				(String)userCursor.get("profilePicture"),
-				null,null,"",null,null
+				null,null, null,"",null,null
 				);
 		
 		/*UserEntity newUser = new UserEntity(

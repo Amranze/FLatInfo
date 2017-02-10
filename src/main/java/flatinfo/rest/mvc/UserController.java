@@ -10,15 +10,18 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,6 +70,26 @@ public class UserController {
 		return "user";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/Friends/{userId}", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getFriendsList(@PathVariable Long userId){
+		DBCursor userCursor = createQuery("_id", userId);
+		return userCursor.count() != 0 ? userCursor.next().get("friends") : null;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/Pictures/{userId}", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getPicturesList(@PathVariable Long userId){
+		DBCursor userCursor = createQuery("_id", userId);
+		return userCursor.count() != 0 ? userCursor.next().get("pictures") : null;
+	}
+
+	private DBCursor createQuery(String objectName, Object object){
+		DBObject query = new BasicDBObject();
+		query.put(objectName, object);
+		return userCollection.find(query);
+	}
+	
 	//TODO try to group POST and GET in the same function
 	@RequestMapping(value="login", method=RequestMethod.POST)
 	//public ModelAndView login(@ModelAttribute("inputUser") String username, @ModelAttribute("inputpwd") String password){
@@ -79,9 +102,9 @@ public class UserController {
 		System.out.println("username "+ user.getMail() + " password : "+user.getPassword());
 		DBObject query = new BasicDBObject();
 		if(user.getMail().indexOf('@') >= 0)	
-			query.put("mail", user.getMail());
+			query.put("mail", user.getMail().toLowerCase());
 		else
-			query.put("username", user.getMail());
+			query.put("username", user.getMail().toLowerCase());
 		query.put("password", user.getPassword());
 		DBCursor userCursor = userCollection.find(query);
 		logger.debug("Query "+query);
@@ -127,7 +150,7 @@ public class UserController {
 				(String)userCursor.get("country"),
 				1L,true,
 				(String)userCursor.get("profilePicture"),
-				null,null,"",null,null
+				null,null,null,"",null,null
 				);
 		
 		/*UserEntity newUser = new UserEntity(
@@ -223,8 +246,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/savePicture", method = RequestMethod.POST)
-	public ModelAndView savePicture(ModelAndView mv, HttpSession session, 
-			@RequestParam("profilePicture") MultipartFile profilePicture){
+	public ModelAndView savePicture(ModelAndView mv, HttpSession session, @RequestParam("profilePicture") MultipartFile profilePicture){
 		if(session.getAttribute(USERSESSION) == null){
 			logger.debug("savePicture null");
 			addUserToModel(mv, "user/login");
