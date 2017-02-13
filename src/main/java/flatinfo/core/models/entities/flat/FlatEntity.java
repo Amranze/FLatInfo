@@ -135,6 +135,12 @@ public class FlatEntity {
 		this.conveniences = conveniences;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "FlatEntity [id=" + id + ", type=" + type + ", contactInfo=" + contactInfo.toString() + ", furnished=" + furnished
+				+ ", area=" + area + ", price=" + price + ", priceOfLoad=" + priceOfLoad + ", advantages=" + advantages
+				+ ", problems=" + problems + ", rating=" + rating + ", pictures=" + pictures + ", users=" + users
+				+ ", owner=" + owner + ", conveniences=" + conveniences + "]";
+	}
 	
 }

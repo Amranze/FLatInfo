@@ -18,19 +18,19 @@ import com.mongodb.QueryBuilder;
 
 import flatinfo.core.models.entities.flat.ContactInfo;
 import flatinfo.core.models.entities.flat.FlatAddress;
+import flatinfo.core.repositories.impl.FlatRepositoryImpl;
 
 @RestController
 @RequestMapping(value = "/flat")
 public class FlatController {
 	
 	private DBCollection flatCollection = MongodbConnection();
+	private FlatRepositoryImpl flatRepo;
+	private static PictureUploadController pictureUploadController = new PictureUploadController();
+	private final static String USERSESSION = "userSession";
+	private final static String ROOTPATH = "C:\\Users\\Amrane Ait Zeouay\\Desktop\\Projects\\FlatInfo\\target\\tomcat\\";
+	private final static String USERPICTURESPATH = "user\\picture\\";
 
-
-	/*@RequestMapping(value="/Flats", method=RequestMethod.GET)
-	public List<FlatEntity> getAllFlats(){
-		
-		return null;	
-	}*/
 	
 	@RequestMapping(value="index", method=RequestMethod.GET)
 	public String index(ModelMap model){
@@ -44,21 +44,11 @@ public class FlatController {
 		model.setViewName("flat");
 		model.addObject("address", address);
 		
-		/*if(flatCollection.getIndexInfo().isEmpty())
-			flatCollection.createIndex(new BasicDBObject ("FlatAddress.roadName", "text"));
-		for(DBObject s : flatCollection.getIndexInfo())
-			System.out.println("The index is "+s);*/
-		
 		String[] splitedAddress = address.split(",");
 		int i =0;
 		for(String s : splitedAddress)
 			System.out.println("The "+ i++ +" split is "+ s);
 		
-		/*String[] splitedFlatAddress = splitedAddress[0].split(" ");
-		i =0;
-		for(String s : splitedFlatAddress)
-			System.out.println("The "+ i++ +" splitedFlatAddress is "+ s);
-		*/
 		ContactInfo contactInfo = new ContactInfo(new FlatAddress(splitedAddress[0]), splitedAddress[1].substring(1), splitedAddress[2].substring(1) );
 		DBCursor flatDB = flatCollection.find(regexQuery(contactInfo));
 		System.out.println("The size of the result "+flatDB.count());

@@ -87,7 +87,8 @@ $(function () {
                                         <img src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" class="img-responsive img-circle" title="John Doe" alt="John Doe" width="30px" height="30px">
                                     </span>
                                     <span class="user-name">
-                                        John Doe
+                                        ${ userSession.getUsername() }
+                                        ${ userSession.getPassword() }
                                     </span>
                                     <b class="caret"></b></a>
                                     <ul class="dropdown-menu">

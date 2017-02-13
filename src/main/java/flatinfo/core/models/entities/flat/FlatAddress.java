@@ -89,4 +89,10 @@ public class FlatAddress {
 		this.roadWay = roadWay;
 	}
 
+	@Override
+	public String toString() {
+		return "FlatAddress [flatNumber=" + flatNumber + ", buildingNumber=" + buildingNumber + ", roadNumber="
+				+ roadNumber + ", roadWay=" + roadWay + ", roadName=" + roadName + "]";
+	}
+	
 }

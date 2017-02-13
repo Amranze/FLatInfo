@@ -8,10 +8,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.DBObject;
+
+import flatinfo.core.models.entities.flat.ContactInfo;
 import flatinfo.core.models.entities.flat.FlatEntity;
 import flatinfo.core.repositories.FlatRepository;
+import flatinfo.core.services.util.FlatEntityList;
 
 @Repository
 public class FlatRepositoryImpl implements FlatRepository{
@@ -69,8 +77,8 @@ public class FlatRepositoryImpl implements FlatRepository{
 
 	@Override
 	public <S extends FlatEntity> S save(S entity) {
-		// TODO Auto-generated method stub
-		return null;
+		mongoTemplate.save(entity);
+		return entity;
 	}
 
 	@Override
@@ -165,8 +173,30 @@ public class FlatRepositoryImpl implements FlatRepository{
 
 	@Override
 	public FlatEntity addFlat(FlatEntity flat) {
-		// TODO Auto-generated method stub
-		return null;
+		return save(flat);
+	}
+
+	@Override
+	public List<FlatEntity> findFlatByDbObject(ContactInfo flatInfo) {
+		//XXX need to createanIndex for RoadName using  db.flatcollection.createIndex({"contactInfo.address" : "text"})
+		
+		/*//TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(flatInfo.getAddress().getRoadName());
+		//Query flatQuery = TextQuery.queryText(criteria);
+		Query flatQuery = new Query(
+				Criteria.where("contactInfo.city").is(flatInfo.getCity())
+				.
+				);
+		flatQuery.addCriteria(Criteria.where("contactInfo.city").is(flatInfo.getCity()));
+		flatQuery.addCriteria(Criteria.where("contactInfo.country").is(flatInfo.getCountry()));
+		//flatQuery.addCriteria(Criteria.where("contactInfo.address").in(flatInfo.getAddress()));
+		flatQuery.addCriteria(Criteria.where("contactInfo.address.roadName").in(flatInfo.getAddress()));
+		*/
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(flatInfo.getAddress().getRoadName());
+		TextQuery flatQuery = new TextQuery(criteria);
+		flatQuery.addCriteria(Criteria.where("contactInfo.city").is(flatInfo.getCity()));
+		flatQuery.addCriteria(Criteria.where("contactInfo.country").is(flatInfo.getCountry()));
+		System.out.println("Query "+flatQuery);
+		return (List<FlatEntity>) mongoTemplate.find(flatQuery, FlatEntity.class);
 	}
 	
 

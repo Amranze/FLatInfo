@@ -36,6 +36,9 @@ public class ContactInfo {
 		this.country = country;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "ContactInfo [address=" + address.toString() + ", city=" + city + ", country=" + country + "]";
+	}
 
 }

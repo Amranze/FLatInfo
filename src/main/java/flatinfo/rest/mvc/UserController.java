@@ -125,7 +125,8 @@ public class UserController {
 			ckMail.setMaxAge(3600);
 			response.addCookie(ckMail);
 		}*/
-		UserEntity userTest = convertDBObjectToUserEntity(userDB); 
+		UserEntity userTest = convertDBObjectToUserEntity(userDB);
+		userTest.setPassword("");
 		session.setAttribute("userSession", userTest);
 		mv.addObject("user", user);
 		return mv;
@@ -378,6 +379,7 @@ public class UserController {
 		pictures = user.getPictures();
 		return pictures;
 	}
+	
 //	
 //	public UserEntityList getAll(){
 //		return userService.findAllUsers();
